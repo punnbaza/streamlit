@@ -108,11 +108,12 @@ with row2_1:
 
 
 
-row3_1= st.columns((1,1))
+row3_1,row3_2= st.columns((1,1))
 with row3_1:
     st.write("**Origin location from %i:00 to %i:00**" % (hour_selected, (hour_selected+3) % 24))
     mapl(dd1, midpoint1[0], midpoint1[1], 11)
-
+with row1_2:
+    hour_selected = st.slider("Select Time (3 hour)", 0, 23, 0, 3)
 
 
 
