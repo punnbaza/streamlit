@@ -4,12 +4,14 @@ import numpy as np
 import altair as alt
 import pydeck as pdk
 
-
+# SETTING PAGE CONFIG TO WIDE MODE
 st.set_page_config(layout="wide")
-st.title('Origin-Destination extracted from iTIC data')
-st.header('Pun Janeang')
 
-# top 
+#Title
+st.title('Origin-Destination extracted from iTIC data')
+st.header('Pun Jandaeng')
+
+# LAYING OUT THE TOP SECTION OF THE APP
 row1_1, row1_2 = st.columns((2,3))
 with row1_1:
     st.write('Select a date in January 2019')
@@ -33,7 +35,7 @@ df = load_data(selected_date)
 data = df
 
 
-
+###################
 # CREATING FUNCTION FOR MAPS
 def mapl(data, lat, lon, zoom):
     st.write(pdk.Deck(
@@ -58,7 +60,28 @@ def mapl(data, lat, lon, zoom):
         ]
     ))
 
-
+def mapr(data, lat, lon, zoom):
+    st.write(pdk.Deck(
+        map_style="mapbox://styles/mapbox/light-v9",
+        initial_view_state={
+            "latitude": lat,
+            "longitude": lon,
+            "zoom": zoom,
+            "pitch": 50,
+        },
+        layers=[
+            pdk.Layer(
+                "HexagonLayer",
+                data=data,
+                get_position=["lonstop", "latstop"],
+                radius=100,
+                elevation_scale=4,
+                elevation_range=[0, 1000],
+                pickable=True,
+                extruded=True,
+            ),
+        ]
+    ))
 ###########3#######
 # FILTERING DATA BY HOUR SELECTED
 #DATE_TIME = "date/time"
@@ -70,24 +93,32 @@ data['timestop'] = pd.to_datetime(data['timestop'])
 
 # LAYING OUT THE TOP SECTION OF THE APP
 t_start = "timestart"
-data1 = data[data[t_start].dt.hour <= hour_selected+3]
+t_stop = "timestop"
+data1 = data[data[t_start].dt.hour <= hour_selected+1]
+data2 = data[data[t_stop].dt.hour <= hour_selected+1]
 midpoint1 = (np.average(data1["latstartl"]), np.average(data1["lonstartl"]))
+midpoint2 = (np.average(data2["latstop"]), np.average(data2["lonstop"]))
 
 
-
-row2_1= st.columns((1,1))
-with row2:
+row2_1, row2_2= st.columns((1,1))
+with row2_1:
     st.write('**Origin Dataframe** of Selected Date (',str(selected_date),'/1/2019) : **Start**')#str(selected_date)
     dd1 = data1[['latstartl', 'lonstartl','timestart']]
     st.dataframe(dd1)
 
+with row2_2:
+    st.write('**Destination Dataframe** of Selected Date (',str(selected_date),'/1/2019) : **Stop**')#str(selected_date)
+    dd2 = data2[['latstop','lonstop','timestop']]
+    st.dataframe(dd2)
 
-
-row3_1= st.columns((1,1))
+row3_1, row3_2= st.columns((1,1))
 with row3_1:
     st.write("**Origin location from %i:00 to %i:00**" % (hour_selected, (hour_selected+3) % 24))
     mapl(dd1, midpoint1[0], midpoint1[1], 11)
 
+with row3_2:
+    st.write("**Destination location from %i:00 to %i:00**" % (hour_selected, (hour_selected+3) % 24))
+    mapr(dd2, midpoint2[0], midpoint2[1], 11)
 
 
 # FILTERING DATA FOR THE HISTOGRAM #START
@@ -101,7 +132,7 @@ chart_data = pd.DataFrame({"minute": range(60), "volume": hist})
 
 # FILTERING DATA FOR THE HISTOGRAM #STOP
 filtered = data[
-    (data[t_stop].dt.hour >= hour_selected) & (data[t_stop].dt.hour < (hour_selected + 3))
+    (data[t_stop].dt.hour >= hour_selected) & (data[t_stop].dt.hour < (hour_selected + 1))
     ]
 
 hist = np.histogram(filtered[t_stop].dt.minute, bins=60, range=(0, 60))[0]
@@ -112,7 +143,7 @@ chart_data = pd.DataFrame({"minute": range(60), "volume": hist})
 
 st.write("")
 
-st.write("**Breakdown of coordinate per minute between %i:00 to %i:00**" % (hour_selected, (hour_selected + 3) % 24))
+st.write("**Breakdown of coordinate per minute between %i:00 to %i:00**" % (hour_selected, (hour_selected + 1) % 24))
 
 st.altair_chart(alt.Chart(chart_data)
     .mark_area(
