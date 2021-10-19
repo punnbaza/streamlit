@@ -9,7 +9,7 @@ st.set_page_config(layout="wide")
 
 #Title
 st.title('Origin-Destination extracted from iTIC data')
-st.header('Poomrapee Wittanarat   6130821621')
+st.header('PUN JADAENG')
 
 # LAYING OUT THE TOP SECTION OF THE APP
 row1_1, row1_2 = st.columns((2,3))
