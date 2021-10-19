@@ -106,19 +106,14 @@ with row2_1:
     dd1 = data1[['latstartl', 'lonstartl','timestart']]
     st.dataframe(dd1)
 
-with row2_2:
-    st.write('**Destination Dataframe** of Selected Date (',str(selected_date),'/1/2019) : **Stop**')#str(selected_date)
-    dd2 = data2[['latstop','lonstop','timestop']]
-    st.dataframe(dd2)
 
-row3_1, row3_2= st.columns((1,1))
+
+row3_1= st.columns((1,1))
 with row3_1:
     st.write("**Origin location from %i:00 to %i:00**" % (hour_selected, (hour_selected+3) % 24))
     mapl(dd1, midpoint1[0], midpoint1[1], 11)
 
-with row3_2:
-    st.write("**Destination location from %i:00 to %i:00**" % (hour_selected, (hour_selected+3) % 24))
-    mapr(dd2, midpoint2[0], midpoint2[1], 11)
+
 
 
 # FILTERING DATA FOR THE HISTOGRAM #START
