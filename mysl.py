@@ -15,7 +15,7 @@ st.header('Pun Jandaeng')
 row1_1, row1_2 = st.columns((2,3))
 with row1_1:
     st.write('Select a date in January 2019')
-    selected_date = st.slider('Date', list(range(1,6)))
+    selected_date = st.slider('Date', 0, 4, 0, 1)
 
 with row1_2:
     hour_selected = st.slider("Select Time (hour)", 0, 23, 0, 1)
