@@ -76,7 +76,7 @@ midpoint1 = (np.average(data1["latstartl"]), np.average(data1["lonstartl"]))
 
 
 row2= st.columns((1,1))
-with row2_1:
+with row2:
     st.write('**Origin Dataframe** of Selected Date (',str(selected_date),'/1/2019) : **Start**')#str(selected_date)
     dd1 = data1[['latstartl', 'lonstartl','timestart']]
     st.dataframe(dd1)
@@ -84,7 +84,7 @@ with row2_1:
 
 
 row3= st.columns((1,1))
-with row3_1:
+with row3:
     st.write("**Origin location from %i:00 to %i:00**" % (hour_selected, (hour_selected+3) % 24))
     mapl(dd1, midpoint1[0], midpoint1[1], 11)
 
