@@ -83,7 +83,7 @@ org_stp = (np.average(data_stp["latstop"]), np.average(data_stp["lonstop"]))
 
 row2_1, row2_2= st.columns((1,2))
 with row2_1:
-  st.header('Start')
+  st.header('Origin')
   st.write('data frame at'+str(day)+' January 2019')
   d1=data_str[['latstartl', 'lonstartl','timestart']]
   st.dataframe(d1)
@@ -95,7 +95,7 @@ with row2_2:
 
 row3_1, row3_2= st.columns((1,2))
 with row3_1:
-  st.header('Stop')
+  st.header('Destination')
   st.write('data frame at'+str(day)+' January 2019')
   d2=data_str[['latstop','lonstop','timestop']]
   st.dataframe(d2)
